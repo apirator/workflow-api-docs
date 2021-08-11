@@ -1,0 +1,193 @@
+openapi: 3.0.0
+info:
+  title: Bets API
+  version: 2.0.0
+  contact:
+    name: Apirator Dev Team
+    email: apirator@apirator.io
+  license:
+    name: MIT License
+    url: 'https://opensource.org/licenses/MIT'
+tags:
+  - name: players
+    description: Manage Bets Players
+  - name: matches
+    description: Manage Bets Matches
+  - name: championships
+    description: Manage Bets Championships
+  - name: bets
+    description: Manage Bets
+servers:
+  - url: 'https://example.com'
+paths:
+  '/api/players/{id}':
+    description: Find players data
+    get:
+      tags:
+        - players
+      parameters:
+        - name: id
+          description: Player ID
+          schema:
+            type: string
+          in: path
+          required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/player'
+              examples:
+                joe:
+                  value:
+                    name: Joe Doe
+                    email: joe@doe.com
+          description: |
+            When player was found
+        '404':
+          content:
+            application/json:
+              examples:
+                error:
+                  value:
+                    code: 404
+                    message: not found
+          description: 404 response
+      operationId: get-player-by-id
+      summary: Get Player Details
+  '/api/bets':
+    post:
+      operationId: create-bet
+      summary: Create Bet
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/bets'
+              examples:
+                bet:
+                  value:
+                    match: 1X-DC
+                    email: joe@doe.com
+                    championship: Uefa Champions League
+                    awayTeamScore: '2'
+                    homeTeamScore: '3'
+          description: |
+            When player was found
+      tags:
+        - bets
+  '/api/matches/{match-id}':
+    get:
+      operationId: get-match-by-id
+      summary: Get Match Details
+      tags:
+        - matches
+      parameters:
+        - name: match-id
+          in: path
+          description: Match ID
+          required: true
+          schema:
+            type: string
+            format: string
+      responses:
+        '200':
+          description: 200 response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/matches'
+              examples:
+                data:
+                  value:
+                    homeTeam: Barcelona
+                    awayTeam: Real Madrid
+                    championship: UEFA Champions League
+  '/api/championships/{championship-id}':
+    get:
+      operationId: get-championship-by-id
+      summary: Get Championship Details
+      tags:
+        - championships
+      parameters:
+        - name: championship-id
+          in: path
+          description: Championship ID
+          required: true
+          schema:
+            type: string
+            format: string
+      responses:
+        '200':
+          description: 200 response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/championships'
+              examples:
+                data:
+                  value:
+                    name: UEFA Champions League
+                    title: Champions League
+                    country: World
+        '404':
+          description: 404 response
+          content:
+            application/json:
+              examples:
+                error:
+                  value:
+                    code: 404
+                    message: not found
+components:
+  schemas:
+    player:
+      title: Player
+      description: Player data
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+      example:
+        name: Joe Doe
+        email: joe@doe.com
+    bets:
+      title: Bets
+      description: Bets
+      properties:
+        homeTeamScore:
+          type: string
+        awayTeamScore:
+          type: string
+        championship:
+          type: string
+        match:
+          type: string
+        email:
+          type: string
+    matches:
+      title: Matches
+      description: Matches Data
+      type: object
+      properties:
+        homeTeam:
+          type: string
+        awayTeam:
+          type: string
+        championship:
+          type: string
+    championships:
+      title: Championships
+      description: Championship Data
+      type: object
+      properties:
+        name:
+          type: string
+        title:
+          type: string
+        country:
+          type: string
