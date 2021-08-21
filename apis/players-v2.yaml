@@ -1,6 +1,8 @@
 openapi: 3.0.0
 x-kong-name: players
 info:
+  x-kubernetes-ingress-metadata:
+    name: players-v2
   title: Bets - Players API
   version: 2.0.0
   contact:
