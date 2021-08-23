@@ -1,6 +1,11 @@
 openapi: 3.0.0
-x-kong-name: players
+x-kong-name: players-v2
 info:
+  x-api-metadata:
+    lifecycle: production
+    api-type: openapi
+    owner: bets-team
+    system: bets
   x-kubernetes-ingress-metadata:
     name: players-v2
   title: Bets - Players API
